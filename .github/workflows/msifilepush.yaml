@@ -1,0 +1,37 @@
+name: Build and Push Docker Image (.NET framework)
+on:
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 2. Log in to Docker Hub (or other registry)
+      - name: Log in to Docker registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERUSERNAME }}
+          password: ${{ secrets.DOCKERPWD }}
+
+      # 3. Build Docker image
+      - name: Build Docker image
+        run: |
+          IMAGE_NAME=my-dotnet-app
+          #IMAGE_TAG=${{ github.sha }}
+          IMAGE_TAG="TestImage"
+          #$tag = "$IMAGE_NAME:$IMAGE_TAG"
+          docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+       
+      # 8. Push Docker image
+      - name: Push Docker image
+        run: |
+          IMAGE_NAME=my-dotnet-app
+          #IMAGE_TAG=${{ github.sha }}
+          IMAGE_TAG="TestImage"
+          docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.DOCKERUSERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker push ${{ secrets.DOCKERUSERNAME }}/${IMAGE_NAME}:${IMAGE_TAG}
