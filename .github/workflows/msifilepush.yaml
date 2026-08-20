@@ -21,7 +21,7 @@ jobs:
       # 3. Build Docker image
       - name: Build Docker image
         run: |
-          IMAGE_NAME=my-dotnetfmwork-app
+          IMAGE_NAME=mynetfmwork-app
           IMAGE_TAG="TestFWImage"
           #$tag = "$IMAGE_NAME:$IMAGE_TAG"
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
@@ -29,7 +29,7 @@ jobs:
       # 8. Push Docker image
       - name: Push Docker image
         run: |
-          IMAGE_NAME=my-dotnetfmwork-app
+          IMAGE_NAME=mynetfmwork-app
           IMAGE_TAG="TestFWImage"
           docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${{ secrets.DOCKERUSERNAME }}/$IMAGE_NAME:$IMAGE_TAG
           docker push ${{ secrets.DOCKERUSERNAME }}/${IMAGE_NAME}:${IMAGE_TAG}
